@@ -10,15 +10,19 @@ output:
     toc_depth: 6
     theme: simplex
     code_folding: hide
+bibliography: references.bib
 ---
 \
+
+<!-- library(usethis) -->
+<!-- use_git_config(user.name = "tgrodrigues13", user.email = "tgrodrigues@umass.edu") -->
 
 # **Bio 476 - Final Research Project**
 <p style="font-size:20pt; color:black">Lower Teakettle --- Chloroflexota</p>
 
-<!-- library(usethis) -->
-<!-- use_git_config(user.name = "tgrodrigues13", user.email = "tgrodrigues@umass.edu") -->
-<!-- <p style="font-size:16pt; color:black">MESSAGE</p> -->
+<p style="font-size:16pt; color:black">Tyler Rodrigues and Adam Maghraoui</p>
+
+\
 
 ```{r, eval=F, echo=F}
 #'[Loading in Libraries]
@@ -50,13 +54,13 @@ suppressPackageStartupMessages(library(zoo))
 
 # Abstract
 <!-- Short like 5 sentences -->
-In this NEON project...
+Do you ever wonder what scientists are actually doing to actively combat climate change? In this project there will be only a glimpse into some of the data that is collected on daily basis from both terrestrial and aquatic sites across the United States. The National Science Foundation's National Ecological Observatory Network (NEON) has been collecting daily data since 2019 on every organism possible. Metagenomic data and chemical properties data are collected and put into an open access database that anyone can use and learn from. In this project we aim to look at this data and practice our data wrangling, analysis, and presentation skills. Taking a deeper look at the phylogenies of the Lower Teakettle Site in California or the Chloroflexota phylum, as well as graphs showing things such as 16s rRNA counts or bin completion/contamination will allow us, and other scientists, to learn from this data and act accordingly by making plans for future change. 
 
 \
 
 # Motivating Reasons
 <!-- Probably 1 paragraph -->
-This project is important...
+This NEON project is incredibly important as it is serving as an open source for all kinds of data that scientists need in order to track how the environment and climate is changing. The ideas behind NEON began to come into place right around 2000 as scientists began to gather and collectively decided that an ecological observatory network across the continental United States, Hawaii, and Puerto Rico was a necessity if they were to try and battle ongoing climate change. The official NEON plan was not finalized until 2006, and funding was not available until 2011. Construction and setup began soon after and operations launched in the summer of 2019 and has running and collecting fantastic data ever since. Motivation from many scientists and researchers involved keep this study alive and it is their dedication that may eventually allow us to fix some of the bigger issues with climate change. For personal motivation we are biology majors who care deeply about the world as well and want to make a difference. Everybody, from the equipment mechanics to the guy behind the screen playing with the data (us), play a humongous part in all the research that gets done. Hopefully one day in our lifetime we can take part in making a change and finally making a dent in this constant problem of climate change. 
 
 \
 
@@ -70,7 +74,19 @@ The National Science Foundation's National Ecological Observatory Network (NEON)
 
 \
 
-The Lower Teakettle NEON site is an evergreen forest biome 
+The Lower Teakettle NEON site is an evergreen forest biome that spans for 51.4 km^2 throughout the Sierra National Forest in California. With hot and dry summers and mild, wet winters, and a mean annual temperature of 8°C, this site is home to thousands of varying organisms and vegetation. Dominated by red and white firs, pines, and plenty of shrubbery, organisms can thrive. With varying elevation from 1900-2807 meters and a mixed terrain of mountains, meadows, and high granite peaks, this makes the TEAK site the perfect area for a long-term ecological study. This site makes up 1 of the 4 located in what is known as the Pacific Southwest Domain (sector D17). Aquatic site Teakettle 2 Creek is colocated with this terrestrial site, and together these sites can produce data on any species or ecosystem present in the area. 
+
+[@noauthor_nsf_nodate]
+
+Chloroflexota is a phylum created first in 2001 in Volume 1 of Bergey's Manual of Systematic Bacteriology, and it contains bacteria that are monoderms (having one cell membrane with no outer membrane). There are a vast group of bacteria in this phylum from aerobic thermophiles to anoxygenic phototrophs. ORganisms now found within the phylum Chloroflexota were at one point grouped together with some of its closest relatives from 3 different generas titled 'Chloroflexus', 'Herpetosiphon', and 'Thermomicrobium' into a grouped genera titled 'Chloroflexi' (a.k.a. Chloroflexota). This grouping was made in 1987 by Carl Woese, where he studied the 16s rRNA counts to distinguish between organisms. Ever since 2001 however, this groupings of genera have been separated and the phylum Chloroflexota is now divided into several classes. Recent studies published in a Dutch microbiology journal show that scientists want to further split the Chloroflexota phylum as many of the classes that make up the phylum have weak evidence of grouping through a phylogeny. The two classes of 'Chloroflexi' and 'Thermomicrobia'are found to share similarities in the some 50s ribosomal proteins, leading scientists to believe that these two classes only make up the phylum Chloroflexota. 
+
+[@noauthor_chloroflexota_2024]
+\
+[@gupta_phylogenetic_2013]
+\
+[@wiegand_taxonomic_2023]
+
+\
 
 # Methods
 ```{r, message=F, warning=F}
@@ -156,6 +172,15 @@ NEON_combo_TEAK <- NEON_combo %>%
   filter(`Site ID.x` == "TEAK") %>% 
   filter(Domain == "Bacteria")
 ```
+```{r}
+#'[Creating Individaual and Co Data Objects]
+
+NEON_MAGs_Ind <- NEON_MAGs %>%
+  filter(Domain == "Bacteria") %>%
+  filter(`Assembly Type` == "Individual")
+
+# NEON_MAGs_Co <- NEON_MAGs %>% filter(Domain == "Bacteria") %>% filter(`Assembly Type` == "Combined")
+```
 ```{r, warning=F, message=F}
 #'[Loading in Sankey NEON Data]
 
@@ -177,10 +202,21 @@ NEON_MAGs_Sankey <- read_csv("data/GOLD_Study_ID_Gs0161344_NEON_edArchaea.csv") 
 #separate the plot info into 3 columns
   separate(`subplot.layer.date`, c("Subplot", "Layer", "Date"), "-")
 ```
+\
 
-<!-- Small description of how we got data/interpreted it -->
+Above, hidden, is where MAG data, metagenome data, and chemistry data were all read in and formatted into a proper working manner. Data for phylogeny trees and Sankey plots is also read in and transformed into the desired form. 
 
-<!-- Talk about https://www.neonscience.org/field-sites/about-field-sites and 'creation' of phylum with 50s rRNA-->
+The NEON experiment is a huge long term experiment, and this means that they have set established methods for each region and for each test that is needed to be ran. Across all sites, NEON runs airborne remote sensing every 2-5 years, automated instrument testing that collects data year round, and observational sampling conducted by field scientists during growing seasons. Airborne remote sensing allows the scientists to get a view of the site from the air to provide updates on canopy cover and big changes to the tree line. Airplanes also use lidar to gain a 3D view of the landscape as well as a spectrometer to look at land cover types and vegetation content. Some automated instruments found on site include a meterorological tower to collect the local weather and climate data, a soil sensor array to measure chemical properties of soil, and phenocams are used to caputre changes in foliage and canopy from both above and below the tree line. Observational sampling is the most hands-on as it requires scientists to be physically present at the site where they collect samples of anything they want to further study back in the lab. Instrument maintenence is usually also done during this time if need be. 
+
+[@hofmeyr_terabase-scale_nodate] 
+\
+[@clum_doe_2021]
+\
+[@noauthor_jgi_nodate]
+\
+[@noauthor_doe_nodate]
+
+\
 
 # Results
 
@@ -244,11 +280,12 @@ NEON_MAGs_Site %>%
   geom_bar(position = position_dodge2(width = 0.8, preserve = "single")) +
   labs(title = "MAG Counts at Lower Teakettle", x = "Site ID", y = "MAG Count")
 ```
-This bar plot shows...
 
 <!-- Scatter for TEAK showing 16s RNA Count -->
 
 ```{r, fig.width = 10, fig.height = 6, fig.align = 'center'}
+#'[Graphing Chunk]
+
 NEON_combo_TEAK %>% 
   ggplot(aes(x=`Total Number of Bases`, y = `Bin Completeness`, color = `16s rRNA`)) +
   geom_point() +
@@ -256,14 +293,46 @@ NEON_combo_TEAK %>%
   labs(title = "Total Number of Bases vs Bin Completeness at Lower Teakettle Site", x = "Total Number of Bases", y = "Bin Completeness (%)", color = "Number of 16s rRNA")
 ```
 
-This scatter plot shows data from the Lower Teakettle site and compares total number of bases to bin completion. The number of 16s RNA per organism is also highlighted. 16s RNA is an important metric as it is what allows scientists to differentiate between organisms at the genus level. Across all the major phyla of bacteria, 16s RNA has been helping scientists become more precise when developing phylogenies and studying relationships between these organisms. 
+This scatter plot shows data from the Lower Teakettle site and compares total number of bases to bin completion. The number of 16s RNA per organism is also highlighted.  
+
+<!-- Novel Bacteria for TEAK by Phylum -->
+
+```{r, fig.width = 10, fig.height = 6}
+#'[Graphing Chunk]
+
+NEON_MAGs_Ind %>%
+  filter(`Site ID` == "TEAK") %>% 
+  group_by(Phylum) %>%
+  summarize(novel_bacteria_count = sum(is.na(Genus))) %>%
+  ggplot(aes(x = Phylum, y = novel_bacteria_count)) +
+  geom_col() +
+  labs(title = "Count of Novel Bacteria per Site", x = "Site ID", y = "Count of Novel Bacteria") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1, size=12))
+```
+
+This graph shows the novel bacteria discovered in every individual site in the NEON database. 
+
+<!-- High vs Low Quality Bins for TEAK -->
+
+```{r, fig.width = 10, fig.height = 6}
+#'[Graphing Chunk]
+
+NEON_MAGs_Ind %>%
+  filter(is.na(Genus)) %>%
+  filter(Site == "Lower Teakettle, Sierra National Forest, California, USA") %>%
+  count(`Bin Quality`) %>%
+  mutate(Bin_Quality = ifelse(`Bin Quality` %in% c("MQ", "HQ"), `Bin Quality`, "NA")) %>%
+  ggplot(aes(x = Bin_Quality, y = n)) +
+  geom_col() +
+  labs(title = "Count of Bin Quality for Unidentified Bacteria", x = "Bin Quality", y = "Count")
+```
+This graph shows high quality versus medium quality for our site. 
 
 \
 
 ### Phylum Graphs - Chloroflexota
 
 <!-- Sankey Plot of Individual Assembly at TEAK -->
-<!-- Talk about what a Sankey Plot is? -->
 
 ```{r, warning=F}
 #'[Sorting for Phylum - Individual Assembly]
@@ -326,10 +395,9 @@ write_tsv(sankey_data_allTaxa, "Ind_Chloro.txt")
 ```{r}
 knitr::include_url("sankey-Ind_Chloro.txt.html")
 ```
-This Sankey plot shows the taxononomy lineage of our phylum, Chloroflexota. It visualizes the taxonomic lineage data from NEON MAGs, formats it for a Sankey diagram, and saves it in a suitable format for use with the Pavian tool, which can visualize metagenomic classifications. Metagenomics provides genetic insights into potentially novel biocatalysts and enzymes, establishes genomic connections between function and phylogeny in uncultured organisms, and offers evolutionary profiles of community function and structure.
+This Sankey plot shows the taxononomy lineage of our phylum, Chloroflexota. This Sankey plot is using individual assemblies only. The provided code filters and prepares taxonomic lineage data from NEON MAGs, formats it for a Sankey diagram, and saves it in a format suitable for the Pavian tool, which is used to visualize metagenomic classifications. 
 
 <!-- Sankey Plot of Combined Assembly at TEAK -->
-<!-- Talk about what a Sankey Plot is? -->
 
 ```{r, warning=F}
 #'[Sorting for Phylum - Combined Assembly]
@@ -392,7 +460,23 @@ write_tsv(sankey_data_allTaxa, "Co_Chloro_pavian.txt")
 ```{r}
 knitr::include_url("sankey-Co_Chloro_pavian.txt.html")
 ```
-This Sankey plot visualizes the taxonomic lineage of the phylum Chloroflexota, based on combined assembly data. The provided code filters and prepares taxonomic lineage data from NEON MAGs, formats it for a Sankey diagram, and saves it in a format suitable for the Pavian tool, which is used to visualize metagenomic classifications. The distinction between individual and combined assemblies is crucial for researchers. Individual assemblies focus on specific samples, providing detailed insights into the genetic makeup and functions within a single dataset. In contrast, combined assemblies aggregate data from multiple samples, offering a broader view of the taxonomic distribution and functional potential across different environments or conditions. By analyzing both individual and combined assemblies, researchers can gain a comprehensive understanding of the diversity and evolutionary relationships within the Chloroflexota phylum.
+This Sankey plot visualizes the taxonomic lineage of the phylum Chloroflexota, based on combined assembly data only. 
+
+<!-- Bar Plot of Phylum Across All Sites -->
+
+```{r, results = "hold", fig.width = 10, fig.height = 4}
+NEON_MAGs_NoNA <- NEON_MAGs %>% 
+  filter(`Site ID` != "NA")
+
+kable(NEON_MAGs_NoNA %>% 
+  select(c(`Site ID`, `Domain`, `Phylum`, `Class`, `Order`, `Family`, `Genus`)) %>% 
+  filter(`Phylum` == "Chloroflexota"))
+
+NEON_MAGs_NoNA %>% 
+  ggplot(aes(x = (Phylum = "Chloroflexota"), fill = `Site ID`)) +
+  geom_bar(position = position_dodge2(width = 0.8, preserve = "single")) +
+  labs(title = "MAG Counts of Chloroflexota by Site", x = "Phylum", y = "MAG Count")
+```
 
 <!-- Triple Graph of Phylum Showing Bin Completeness/Contamination -->
 
@@ -417,65 +501,46 @@ ggtree(tree_Chloroflexota)  %<+%
   theme(legend.position.inside = c(0.05, 0.4), legend.background = element_rect(fill = "white", colour = NA)) # c(0,0) bottom left, c(1,1) top-right
 ```
 
-These three graphs together show the phylogeny of Chloroflexota along with both individual and combined assembly data for Bin Completeness/Contamination. The phylogenetic tree is also highlighted with Site ID. This data is important to see which bins may have too much contamination to use in studies, as well as keeping track of which bins are still in need of completion. As this project has been happening for a while, and will continue on for a while, it is incredibly important to keep the data and yourself as the scientist completely organized. This ensures that a quality study is done and all points of interest are covered by the study.
+These three graphs together show the phylogeny of Chloroflexota along with both individual and combined assembly data for Bin Completeness/Contamination. The phylogenetic tree is also highlighted with Site ID. 
 
-<!-- Bar Plot of Phylum Across All Sites -->
-
-```{r, results = "hold", fig.width = 10, fig.height = 4}
-NEON_MAGs_NoNA <- NEON_MAGs %>% 
-  filter(`Site ID` != "NA")
-
-kable(NEON_MAGs_NoNA %>% 
-  select(c(`Site ID`, `Domain`, `Phylum`, `Class`, `Order`, `Family`, `Genus`)) %>% 
-  filter(`Phylum` == "Chloroflexota"))
-
-NEON_MAGs_NoNA %>% 
-  ggplot(aes(x = (Phylum = "Chloroflexota"), fill = `Site ID`)) +
-  geom_bar(position = position_dodge2(width = 0.8, preserve = "single")) +
-  labs(title = "MAG Counts of Chloroflexota by Site", x = "Phylum", y = "MAG Count")
+<!-- Soil Temperature of Chloroflexota Across Sites -->
+```{r, warning=F}
+NEON_combo_Chloroflexota %>% 
+  ggplot(aes(x=`Site ID.x`, y = soilTemp)) +
+  geom_boxplot() +
+  labs(title = "Soil Temperature by Site for Chloroflexota", x = "Site", y = "Soil Temperature (°C)")
 ```
- 
+
+This graph displays the distribution of soil temperatures for each sample at various sites, specifically focusing on the phylum Chloroflexota. By utilizing a boxplot, it provides a clear visualization of the temperature range, median, and variability at each site. Understanding soil temperature variations is crucial as it directly affects the growth and metabolic activities of Chloroflexota. Different temperature conditions can influence the abundance, diversity, and function of this phylum in soil environments. 
+
+<!-- Soil pH vs Vegetation Type -->
+
+```{r, warning=F}
+NEON_combo_Chloroflexota %>% 
+  ggplot(aes(x=`nlcdClass`, y = soilInCaClpH, color = Class)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1, size=9)) +
+  labs(title = "Soil pH by Vegetation Type for Chloroflexota", x = "Vegetation Type", y = "pH Level")
+```
+
+This graph illustrates the relationship between soil pH in CaCl (soilInCaClpH) and land cover classification (nlcdClass) for samples in the phylum Chloroflexota. Each point represents a sample, with different colors indicating the Class order within Chloroflexota.
+
 \
 
 # Discussion
-<!-- Only 1 paragraph -->
+
+These graphs shown above provide a comprehensive view of the phylogeny of Chloroflexota as well as the phylogeny of the Lower Teakettle Site. Included as well are graphs showing the quality of assembly data, including bin completeness/contamination, and total number of bases. The phylogeny circle graph offers a detailed visualization of the different species the Lower Teakettle Site, color-coded by phylum. This is essential for understanding the diversity and evolutionary relationships of these organisms. The scatter plot, which compares the total number of bases to bin completion and highlights the number of 16s RNA per organism, is particularly useful. 16s RNA is an important metric as it is what allows scientists to differentiate between organisms at the genus level. Across all the major phyla of bacteria, 16s RNA has been helping scientists become more precise when developing phylogenies and studying relationships between these organisms. This kind of detailed genetic information is indispensable for developing a nuanced understanding of microbial communities. Bin completion/contamination data is important in order to see which bins may have too much contamination to use in studies, as well as keeping track of which bins are still in need of completion. As this project has been happening for a while, and will continue on for a while, it is incredibly important to keep the data and yourself as the scientist completely organized. This ensures that a quality study is done and all points of interest are covered by the study.
+
+Furthermore, the distinction between high-quality and medium-quality data is highlighted in the graph comparing these standards for our site. High-quality data ensures more reliable and comprehensive insights, leading to robust conclusions. Conversely, medium-quality data, while still useful, might lead to less definitive insights due to its limitations. Recognizing these differences is crucial for evaluating the reliability of research findings. Additionally, the two Sankey plots visualize the taxonomic lineage of Chloroflexota, formatted for use with the Pavian tool, which aids in visualizing metagenomic classifications. This helps in understanding the genetic insights from metagenomics and establishes genomic connections between function and phylogeny in uncultured organisms. Discovering novel bacteria at each site reveals the unique microbial diversity and local adaptations present in different environments. This has significant implications for biotechnology, offering potential new enzymes and biochemical pathways. It also enhances our understanding of microbial ecology and evolution, providing insights into ecosystem functions and evolutionary processes. Additionally, these discoveries enrich microbial databases, improving the accuracy of microbial identification and classification tools.
+
+By analyzing both individual and combined assemblies, researchers can gain a comprehensive understanding of the diversity and evolutionary relationships within the Chloroflexota phylum. This combined data approach allows for a broader view of taxonomic distribution and functional potential across different environments, providing a holistic picture of the phylum's role in various ecosystems. These visualizations and data analyses are crucial for organizing ongoing and future research, ensuring the quality and thoroughness of studies focused on Chloroflexota. Ultimately, this leads to a well-rounded understanding of the phylum's ecological significance and its potential applications in biotechnology and environmental management.
 
 \
 
 # Conclusion
-<!-- Only 1 paragraph -->
 
+After completing this project we have began to deep dive into the world of bioinformatics and have learned a great deal about the Lower Teakettle NEON site as well as the Chloroflexota phylum. We have demostrated and discussed how the NEON project, and data wrangling projects like these, are imporant for scientists and researchers. These projects allow massive amounts of raw data to be compiled, wrangled, and then cleaned up to provide a nice output for whoever the audience may be. This project has not only taught us a lot about the uses of programming and R in biology, but also how many fields can mix and work together to achieve great things. 
 
+\
 
-```{r}
-#'[Creating Individaual and Co Data Objects]
-
-NEON_MAGs_Ind <- NEON_MAGs %>%
-  filter(Domain == "Bacteria") %>%
-  filter(`Assembly Type` == "Individual")
-
-# NEON_MAGs_Co <- NEON_MAGs %>% filter(Domain == "Bacteria") %>% filter(`Assembly Type` == "Combined")
-```
-
-```{r}
-#'[Mag Count of each subplot]
-
-NEON_MAGs_Ind %>%
-  count(Site, Subplot, Class) %>%
-  ggplot(aes(x = Subplot, y = n, fill = Site)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  facet_wrap(vars(Class), scales = "free_y", ncol = 1) +
-  labs(x = "Subplot", y = "MAG Count", fill = "Site ID") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-```
-
-```{r}
-#'[Novel Bacteria Discovered for individual site]
-
-NEON_MAGs_Ind %>%
-  group_by(Site) %>%
-  summarize(novel_bacteria_count = sum(is.na(Genus))) %>%
-  ggplot(aes(x = Site, y = novel_bacteria_count)) +
-  geom_col() +
-  labs(title = "Count of Novel Bacteria per Site", x = "Site", y = "Count of Novel Bacteria")
-```
+# References
